@@ -64,6 +64,7 @@ const Myproject = () => {
                         srcDoc={project.current_code}
                         className="w-[1200px] h-[800px] pointer-events-none"
                         sandbox="allow-scripts allow-same-origin"
+                        
                       />
                     </div>
                   ) : (
