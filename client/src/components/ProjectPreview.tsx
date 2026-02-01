@@ -3,7 +3,7 @@ import type { Project } from '../types';
 import { iframeScript } from '../assets/assets';
 
 interface ProjectPreviewProps{
-    project: Projects;
+    project: Project;
     isGenrating: boolean;
     device?: 'phone' | 'tablet' | 'desktop';
     showEditorialPanel?: boolean;
@@ -13,7 +13,7 @@ export interface ProjectPreviewRef {
   getCode: ()=> string | undefined;
 }
 
-const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>( ({project, isGenrating, device = 'desktop',showEditorPanel =true}, ref) => {
+const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>( ({project, isGenrating, device = 'desktop',showEditorialPanel =true}, ref) => {
 
    const iframeRef =useRef<HTMLIFrameElement>(null)
    const resolutions ={
@@ -23,7 +23,7 @@ const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>( ({pro
    }
    const injectPreview = (html: string) =>{
     if(!html) return '';
-    if(!showEditorPanel) return html
+    if(!showEditorialPanel) return html
     if(html.includes('</body>')){
         return html.replace('</body>',iframeScript + '</body>')
     }else{
@@ -40,7 +40,7 @@ const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>( ({pro
         <iframe 
         ref={iframeRef} 
         srcDoc={injectPreview(project.current_code)}
-        className={'h-full max-sm:w-full ${resolutions[device]} mx-auto transition-all'}/>
+        className={`h-full max-sm:w-full ${resolutions[device]} mx-auto transition-all`}/>
         </>
         ):isGenrating &&(
             <div>loading</div>

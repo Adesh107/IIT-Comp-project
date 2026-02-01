@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import type { Message,Project } from '../types';
+import React, { useEffect, useRef, useState } from 'react'
+import type { Message,Project, Version } from '../types';
 import { Link } from 'react-router-dom';
-import { Loader2Icon, SendIcon } from 'lucide-react';
+import { BotIcon, EyeIcon, Loader2Icon, SendIcon, UserIcon } from 'lucide-react';
 
 interface SidebarProps {
     isMenuOpen: boolean;
@@ -28,25 +28,25 @@ SidebarProps) => {
     },[project.conversation.length, isGenerating])
 
   return (
-    <div className={`h-full sm:max-w-sm rounded-x1 bg-gray-900 border-gray-800 transition-all ${isMenuOpen ? 'max-sm:w-0 overflow-hidden' :  'w-full'}`}>
+    <div className={`h-full sm:max-w-sm rounded-xl bg-gray-900 border-gray-800 transition-all ${isMenuOpen ? 'max-sm:w-0 overflow-hidden' :  'w-full'}`}>
       <div className='flex flex-col h-full'>
         {/* Messages container */}
         <div className='flex-1 overflow-y-auto no-scrollbar px-3 flex flex-col gap-4'>            
-            {[...project.conversation, ...project.versions].sort(a,b)=> new Date(a.timesstamp).getTime() - new Date(a.timestamp).getTime()).map((message)=>{
+            {[...project.conversation, ...project.versions].sort((a,b)=> new Date(a.timestamp).getTime() - new Date(a.timestamp).getTime()).map((message)=>{
                 const isMessage = 'content' in message;
 
                 if(isMessage){
                     const msg = message as Message;
                     const isUser = msg.role === 'user';
                     return (
-                        <div key={msg.id} className={`flex items-start gap-3 $ {isUser ? "justify-end" : "justify-start"}`}>
+                        <div key={msg.id} className={`flex items-start gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
                             {!isUser && (
                                 <div className='w-8 h-8 rounded-full
                                 bg-linear-to-br from-indigo-600 to-indigo-700 flex items-center justify-center'>
                                     <BotIcon className='size-5 text-white'/>
                                 </div>
                             )}
-                            <div className={`max-w-[80%] p-2 px-4 rounded-2x1 shadow-sm text-sm mt-5 leading-relaxed ${isUser ? "bg-linear-to-r from-indigo-500 to-indigo-600 text-white rounded-tr-none" : "rounded-t1-none bg-gray-800 text-gray-100"}`}>
+                            <div className={`max-w-[80%] p-2 px-4 rounded-2xl shadow-sm text-sm mt-5 leading-relaxed ${isUser ? "bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-tr-none" : "rounded-tl-none bg-gray-800 text-gray-100"}`}>
                                 {msg.content}
                             </div>
                             {isUser && (
@@ -63,7 +63,7 @@ SidebarProps) => {
                             <div className='text-xs font-medium'>
                                 code updated <br />
                                 <span className='text-gray-500 text-xs font-normal'>
-                                {new Date(ver.timesstamp).toLocaleString()}
+                                {new Date(ver.timestamp).toLocaleString()}
                                 </span>
                             </div>
                             <div className='flex items-center justify-between'>
@@ -72,7 +72,7 @@ SidebarProps) => {
                                 ): (
                                     <button onClick={()=> handleRollback(ver.id)} className='px-3 py-1 rounded-md text-xs bg-indigo-500 hover:bg-indigo-600 text-white'>Roll back to this version</button>
                                 )}
-                                <Link target='_blank' to={`/preview/${project.id}/$ {ver.id}`}>
+                                <Link target='_blank' to={`/preview/${project.id}/${ver.id}`}>
                                 <EyeIcon  className='size-6 p-1 bg-gray-700 hover:bg-indigo-500 transition-colors rounded'/>
                                 </Link>
                             </div>
@@ -81,27 +81,29 @@ SidebarProps) => {
                 }
             })}
             {isGenerating && (
-                 <div className='w-8 h-8 rounded-full bg-linear-to-br from-indigo-600 to-indigo-700 flex items-center justify-center'>
-                    <BotIcon className='size-5 text-white'/>
-                 <div/>
-                 {/* three dot loader */}
-                 <div className='flex gap-1.5 h-full items-end'>
-                     <span className='size-2 rounded-full animate-bounce bg-gray-600' style={{animationDelay : '0s'}}/>
-                     <span className='size-2 rounded-full animate-bounce bg-gray-600' style={{animationDelay : '0.2s'}}/>
-                     <span className='size-2 rounded-full animate-bounce bg-gray-600' style={{animationDelay : '0.4s'}}/>
-                 </div>
-            )
-            
-            }    
-            <div ref={messageRef}/>
-        </div>
+                        <div className="flex items-start gap-3">
+                            <div className='w-8 h-8 rounded-full shrink-0 bg-gradient-to-br from-indigo-600 to-indigo-700 flex items-center justify-center'>
+                                <BotIcon className='size-5 text-white' />
+                            </div>
+                            <div className='bg-gray-800 p-3 rounded-2xl rounded-tl-none'>
+                                <div className='flex gap-1.5 h-full items-center'>
+                                    <span className='size-2 rounded-full animate-bounce bg-gray-500' style={{ animationDelay: '0s' }} />
+                                    <span className='size-2 rounded-full animate-bounce bg-gray-500' style={{ animationDelay: '0.2s' }} />
+                                    <span className='size-2 rounded-full animate-bounce bg-gray-500' style={{ animationDelay: '0.4s' }} />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <div ref={messageRef} />
+                </div>   
+        
         {/* Input area */}
         <form className='m-3 relative'>
             <div className='flex items-center gap-2'>
                 <textarea onChange={(e)=>setInput(e.target.value)} value={input} rows={4} placeholder='Describe your website or request changes...' className='flex-1 p-3 rounded-x1 resize-none text-sm outline-none ring ring-gray-700 focus:ring-indigo-500 bg-gray-800 text-gray-100 placeholder-gray-400 transition-all' disabled={isGenerating}/>
                 <button>
                     {isGenerating
-                    ? <Loader2Icon className='size-7 p-1.5 animate-spin text-white'/
+                    ? <Loader2Icon className='size-7 p-1.5 animate-spin text-white'
                     >
                 : <SendIcon className='size-7 p-1.5 text-white'/>}
                 </button>
