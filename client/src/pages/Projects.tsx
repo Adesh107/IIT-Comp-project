@@ -104,7 +104,7 @@ const Projects = () => {
       </div>
       </div>
       <div className='flex-1 flex overflow-auto'>
-              <div>Sidebar</div>
+             <Sidebar isMenuOpen={isMenuOpen} project={project} setProject={(p)=>setProject(p)} isGenerating={isGenerating} setIsGenerating={setIsGenerating}/>
               <div className='flex-1 p-2 pl-0'>
                 project preview
               </div>
