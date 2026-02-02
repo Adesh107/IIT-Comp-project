@@ -30,11 +30,11 @@ const EditorPanel = ({selectedElement, onUpdate, onClose}: EditorPanelProps) => 
 
     const handleChange = (field: string, value: string)=>{
         const newValues = {...values, [field]: value};
-        if( field values.styles){
+        if( field in values.styles){
             newValues.styles = {...values.styles, [field]: value}
         }
         setValues(newValues)
-        onUpdate{{[field]: value}};
+        onUpdate({[field]: value});
     }
 
     const handleStyleChange = (styleName: string, value: string)=>{
@@ -85,7 +85,7 @@ const EditorPanel = ({selectedElement, onUpdate, onClose}: EditorPanelProps) => 
                 <label className='block text-xs font-medium text-gray-500 mb-1'>Background</label>
                 <div className='flex items-center gap-2 border border-gray-400 rounded-md p-1'>
                     <input type='color'
-                value={values.styles.backgroundColor === 'rgba(0, 0, 0, 0}' ? '#ffffff' : values.styles.backgroundColor} onChange={(e)=>handleStyleChange('backgroundcolor', e.target.value)} className='w-6 h-6 cursor-pointer'/>
+                value={values.styles.backgroundColor === 'rgba(0, 0, 0, 0)' ? '#ffffff' : values.styles.backgroundColor} onChange={(e)=>handleStyleChange('backgroundColor', e.target.value)} className='w-6 h-6 cursor-pointer'/>
                 <span className='text-xs text-gray-600 truncate'>{values.styles.backgroundColor}</span>
                 </div>
 
@@ -99,6 +99,7 @@ const EditorPanel = ({selectedElement, onUpdate, onClose}: EditorPanelProps) => 
                 </div>
              
         </div>
+    </div>
     </div>
     </div>
   )

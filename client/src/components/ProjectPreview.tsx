@@ -2,6 +2,7 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { Project } from '../types';
 import { iframeScript } from '../assets/assets';
 import { Edit } from 'lucide-react';
+import EditorPanel from './EditorPanel';
 
 interface ProjectPreviewProps{
     project: Project;
@@ -37,6 +38,15 @@ const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>( ({pro
     return ()=> window.removeEventListener('message', handleMessage)
    },[])
 
+   const handleUpdate=(updates: any)=>{
+    if(iframeRef.current?.contentWindow){
+        iframeRef.current.contentWindow.postMessage({
+            type:'UPDATE_ELEMENT',
+            payload: updates
+        },"*")
+    }
+   }
+
    const injectPreview = (html: string) =>{
     if(!html) return '';
     if(!showEditorialPanel) return html
@@ -58,7 +68,13 @@ const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>( ({pro
         srcDoc={injectPreview(project.current_code)}
         className={`h-full max-sm:w-full ${resolutions[device]} mx-auto transition-all`}/>
         {showEditorialPanel && selectedElement && (
-            <
+            <EditorPanel selectedElement = {selectedElement}
+            onUpdate = {handleUpdate} onClose={()=>{selectedElement(null);
+                if(iframeRef.current?.contentWindow){
+                    iframeRef.current.contentWindow.postMessage({type:'CLEAR_SELECTION_REQUEST'},'*')
+                }
+            }}/>
+
         )}
         </>
         ):isGenrating &&(
