@@ -33,8 +33,8 @@ const View = () => {
   }
   
   return (
-    <div>
-      {code && <ProjectPreview  project={{current_code: code} as Project} isGenrating={false} showEditorPanel={false}/>}
+    <div className="h-screen">
+      {code && <ProjectPreview  project={{current_code: code} as Project} isGenrating={false} showEditorialPanel={false}/>}
       </div>
   )
 }
