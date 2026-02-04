@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import type { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { dummyProjects } from "../assets/assets";
 import { Loader2Icon } from "lucide-react";
 import ProjectPreview from "../components/ProjectPreview";
@@ -8,14 +8,11 @@ import type { Project } from "../types";
 
 const preview = () => {
 
-  const { projectId, versionId } useParams();
+  const { projectId, versionId }= useParams();
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const View = () => {
-  const { projectId } = useParams();
-  const [code, setCode] = useState('')
-  const [loading, setLoading] = useState(true)
+  
 
   const fetchcode = async () => {
     setTimeout(()=>{
@@ -41,7 +38,7 @@ const preview = () => {
   
   return (
     <div className="h-screen">
-      {code && <ProjectPreview  project={{current_code: code} as Project} isGenrating={false} showEditorPanel={false}/>}
+      {code && <ProjectPreview  project={{current_code: code} as Project} isGenrating={false} showEditorialPanel={false}/>}
       </div>
   )
 }

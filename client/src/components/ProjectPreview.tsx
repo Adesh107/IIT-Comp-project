@@ -32,6 +32,13 @@ const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>( ({pro
         if(!doc) return undefined;
 
         // 1. Remove our selection class / attributes / outline from all elements
+        doc.querySelectorAll('.ai-selected-element,[data-ai-selected]').forEach(
+            (el)=>{
+                el.classList.remove('ai-selected-element');
+                el.removeAttribute('data-ai-selected');
+                (el as HTMLElement).style.outline='';
+            }
+        ) 
     }
    }))
 
@@ -78,7 +85,7 @@ const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>( ({pro
         className={`h-full max-sm:w-full ${resolutions[device]} mx-auto transition-all`}/>
         {showEditorialPanel && selectedElement && (
             <EditorPanel selectedElement = {selectedElement}
-            onUpdate = {handleUpdate} onClose={()=>{selectedElement(null);
+            onUpdate = {handleUpdate} onClose={()=>{setSelectedElement(null);
                 if(iframeRef.current?.contentWindow){
                     iframeRef.current.contentWindow.postMessage({type:'CLEAR_SELECTION_REQUEST'},'*')
                 }
