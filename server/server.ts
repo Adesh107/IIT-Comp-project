@@ -4,14 +4,17 @@ import cors from 'cors';
 
 const app = express();
 
+
 const port = 3000;
 
-const corsOptions = {
-    origin: process.env.TRUSTED_ORIGINS?.split(',') || [],
-    credentials: true,
+const corsOptio={
+    origin: [],
+    Credentials: true,
 }
 
-app.use(cors(corsOptions))
+
+
+app.use(cors())
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Server is Live!');
