@@ -1,18 +1,15 @@
 import express, { Request, Response } from 'express';
-import 'dotenv/config'
-import cors from 'cors';
+import 'dotenv/config';
+import cors from 'cors'
 
 const app = express();
 
-
 const port = 3000;
 
-const corsOptio={
-    origin: [],
+const corsOptions={
+    origin:process.env.TRUSTED_ORIGINS?.split(',')||[],
     Credentials: true,
 }
-
-
 
 app.use(cors())
 
