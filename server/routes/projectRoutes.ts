@@ -12,3 +12,4 @@ projectRouter.get('/preview/:projectId', protect, getProjectPreview)
 projectRouter.get('/published', getPublishedProjects)
 projectRouter.get('/published/:projectId', getProjectById)
 
+export default projectRouter

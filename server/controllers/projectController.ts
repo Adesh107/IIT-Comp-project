@@ -50,7 +50,7 @@ export const makeRevision=async(req:Request, res: Response)=>{
         //Enhance user prompt
 
         const promptEnhanceResponce = await openai.chat.completions.create({
-            model: 'z-ai/glm-4.5-air:free',
+            model: 'kwaipilot/kat-coder-pro:free',
             messages:[{
                  role:'system',
                  content: `You are a prompt enhancement specialist. The user wants to make changes to their website. Enhance their request to be more specific and actionable for a web developer.
@@ -85,9 +85,9 @@ Return ONLY the enhanced request, nothing else. Keep it concise (1-2 sentences).
             }
         })
 
-        //Genrate website code
+        //Generate website code
         const codeGenrationResponse= await openai.chat.completions.create({
-            model: 'z-ai/glm-4.5-air:free',
+            model: 'kwaipilot/kat-coder-pro:free',
             messages:[{
                 role: 'system',
                 content: `You are an expert web developer. 
