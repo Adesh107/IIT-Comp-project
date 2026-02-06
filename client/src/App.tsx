@@ -11,6 +11,7 @@ import Community from './pages/Community'
 import View from './pages/View'
 import Navbar from './components/Navbar'
 import AuthPage from './pages/auth/AuthPage'
+import { Settings } from 'lucide-react'
 const App = () => {
 
   const { pathname } = useLocation()
@@ -35,6 +36,7 @@ const App = () => {
         <Route path='/community' element={<Community />} />
         <Route path='/view/:projectId' element={<View />} />
         <Route path="/auth/:pathname" element={<AuthPage />} />
+        <Route path="/account/settings" element={<Settings />} />
       </Routes>
     </div>
   )
