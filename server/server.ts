@@ -7,13 +7,15 @@ import { auth } from './lib/auth.js';
 const app = express();
 
 const port = 3000;
-
+//imp part
 const corsOptions={
     origin:process.env.TRUSTED_ORIGINS?.split(',')||[],
-    Credentials: true,
+    credentials: true,
+    //methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    //allowedHeaders: ["Content-Type", "Authorization"]
 }
 
-app.use(cors())
+app.use(cors(corsOptions))
 app.all('/api/auth/{*any}', toNodeHandler(auth));
 
 app.get('/', (req: Request, res: Response) => {
