@@ -1,1 +1,13 @@
 import  Express  from "express";
+import {getUserCredits, getUserProjects, purchaseCredits, togglePublish} from '../controllers/userController.js';
+import { protect } from "../middlewares/auth.js";
+const userRouter = Express.Router();
+
+userRouter.get('/credits',protect,getUserCredits)
+userRouter.post('/project',protect,getUserProjects)
+userRouter.get('/project/:projectId',protect,getUserProjects)
+userRouter.get('/projects',protect,getUserProjects)
+userRouter.get('/publish-toggle/:projectId',protect,togglePublish)
+userRouter.post('/purchase-credits', protect,purchaseCredits)
+
+export default userRouter
