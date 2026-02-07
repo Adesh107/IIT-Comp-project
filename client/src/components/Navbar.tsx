@@ -15,7 +15,7 @@ const Navbar = () => {
 
     const {data:session}=authClient.useSession()
 
-    const getCredits: async () => {
+    const getCredits= async () => {
       try {
         const {data} = await api.get('/api/user/credits');
         setCredits(data.credits)
