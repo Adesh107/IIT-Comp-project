@@ -150,7 +150,7 @@ Return ONLY the enhanced request, nothing else. Keep it concise (1-2 sentences).
 export const rollbackToVersion =async(req:Request, res: Response)=>{
     const userId = req.userId;
    try {
-       const userId = req:userId;
+       
        if(!userId){
            return res.status(401).json({ messaage: 'Unauthorized'});
        }
@@ -198,7 +198,7 @@ export const rollbackToVersion =async(req:Request, res: Response)=>{
 export const deleteProject =async(req:Request, res: Response)=>{
     const userId = req.userId;
    try {
-       const userId = req:userId;
+       
        const { projectId } = req.params;
       
 
@@ -218,14 +218,14 @@ export const deleteProject =async(req:Request, res: Response)=>{
 export const getProjectPreview =async(req:Request, res: Response)=>{
     const userId = req.userId;
    try {
-       const userId = req:userId;
+       
        const { projectId } = req.params;
 
        if(!userId){
           return res.status(401).json({ message: 'Unauthorized' });
        }
 
-       const project = await prisma.websiteProject.findFirst({
+       const project = await prisma.websiteProject.findUnique({
           where: {id: projectId, userId},
           include: {versions: true}
        })
