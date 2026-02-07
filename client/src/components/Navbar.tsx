@@ -3,13 +3,35 @@ import { assets } from '../assets/assets';
 import {Link, useNavigate} from 'react-router-dom'
 import { authClient } from '@/lib/auth-client';
 import {UserButton} from '@daveyplate/better-auth-ui'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import api from '@/configs/axios';
+import { toast } from 'sonner';
 
 const Navbar = () => {
 
     const [menuOpen, setMenuOpen] = React.useState(false);
     const navigate = useNavigate()
+    const [credits, setCredits] = useState(0)
+
     const {data:session}=authClient.useSession()
+
+    const getCredits: async () => {
+      try {
+        const {data} = await api.get('/api/user/credits');
+        setCredits(data.credits)
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message || error.message)
+        console.log(error);
+      } 
+    }
+
+    useEffect(()=>{
+      if(session?.user){
+        getCredits()
+      }
+    },[session?.user])
+
+    
   return (
     <><nav className="z-50 flex items-center justify-between w-full py-4 px-4 md:px-16 lg:px-24 xl:px-32 backdrop-blur border-b text-white border-slate-800">
         <a href="https://prebuiltui.com">
@@ -32,7 +54,11 @@ const Navbar = () => {
               Get started
             </button>
             ) :(
+              <>
+              <button className='bg-white/10 px-5 py-1.5 text-xs sm:text-sm border text-gray-200 rounded-full'>
+              Credits : <span className='text-indigo-300'>{credits}</span></button>
               <UserButton size='icon'/>
+              </>
             )}
             <button id="open-menu" className="md:hidden active:scale-90 transition" onClick={() => setMenuOpen(true)} >
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
