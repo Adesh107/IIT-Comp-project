@@ -103,7 +103,8 @@ Return ONLY the enhanced request, nothing else. Keep it concise (1-2 sentences).
     Apply the requested changes while maintaining the Tailwind CSS styling approach.`
             },{
                role:'user',
-               content:`Here is the current website code: "${currentProject.current_code}"The user wants this change:"${enhancedprompt}"` 
+               content:`Here is the current website code: "${currentProject.current_code}
+               "The user wants this change:"${enhancedprompt}"` 
             }]
         })
       
